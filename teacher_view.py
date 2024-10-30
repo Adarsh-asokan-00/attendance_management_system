@@ -10,10 +10,10 @@ from mysql.connector import Error
 def get_connection_to_mysql():
     try:
         return mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="1234",
-            database="student_"
+            host="",
+            user="",
+            password="",
+            database=""
         )
     except Error as e:
         st.error(f"Error connecting to database: {e}")
