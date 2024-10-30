@@ -1,6 +1,8 @@
-create database student_;
-use student_;
+-- Create and use the database
+CREATE DATABASE student_;
+USE student_;
 
+-- Create the student table
 CREATE TABLE student (
     student_id INT PRIMARY KEY AUTO_INCREMENT,
     full_name VARCHAR(100) NOT NULL,
@@ -9,14 +11,13 @@ CREATE TABLE student (
     address TEXT NOT NULL,
     department_name VARCHAR(100) NOT NULL,
     password_hash VARCHAR(60) NOT NULL,  -- Adjusted for bcrypt hash length
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Optionally add ON UPDATE CURRENT_TIMESTAMP
-   # -- Optional: Add an updated_at column if you want to track updates
-    #-- updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp for record creation
+    -- Optionally add updated_at column to track updates
+    -- updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
-create table attendance (
+-- Create the attendance table
+CREATE TABLE attendance (
     record_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     student_name VARCHAR(100) NOT NULL,
@@ -25,26 +26,33 @@ create table attendance (
     date_ DATE NOT NULL,
     attendance_status ENUM('present', 'absent', 'late') NOT NULL,
     FOREIGN KEY (student_id) REFERENCES student(student_id),
-
-    UNIQUE KEY unique_attendance (student_id, subject_name, date_) -- Add subject_name to the unique constraint
+    UNIQUE KEY unique_attendance (student_id, subject_name, date_)  -- Unique constraint for attendance records
 );
-create table teacher(teacher_id int primary key auto_increment,
-teacher_name varchar(100) not null,
-department_name varchar(100) not null,
-subject_name varchar(100) ,
-email_id varchar(100)not null,
-password_hash text not null);
 
+-- Create the teacher table
+CREATE TABLE teacher (
+    teacher_id INT PRIMARY KEY AUTO_INCREMENT,
+    teacher_name VARCHAR(100) NOT NULL,
+    department_name VARCHAR(100) NOT NULL,
+    subject_name VARCHAR(100),
+    email_id VARCHAR(100) NOT NULL,
+    password_hash TEXT NOT NULL  -- Password storage
+);
 
-create table admin(admin_id int primary key auto_increment,
-name varchar(100) not null,
-email_id varchar(100) not null,
-password_hash text not null);
+-- Create the admin table
+CREATE TABLE admin (
+    admin_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email_id VARCHAR(100) NOT NULL,
+    password_hash TEXT NOT NULL  -- Password storage
+);
 
-create table users (user_id int auto_increment primary key,
-name varchar(100),
-email_id varchar(100) not null unique,
-password_hash text not null,
- role ENUM('student', 'admin','teacher') NOT NULL);
-
+-- Create the users table
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email_id VARCHAR(100) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,  -- Password storage
+    role ENUM('student', 'admin', 'teacher') NOT NULL  -- User role
+);
 
