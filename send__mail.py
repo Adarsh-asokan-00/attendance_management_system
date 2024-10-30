@@ -3,8 +3,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def send_email(subject, body, to_email):
-    sender_email = "capitalraidcoc004@gmail.com"
-    sender_password = "meoa ymxz ewxe eich"  # Use the App Password here
+    sender_email = ""#Use the Email id here
+    sender_password = ""  # Use the App Password here
 
     message = MIMEMultipart()
     message['From'] = sender_email
