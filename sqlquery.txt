@@ -48,21 +48,3 @@ password_hash text not null,
  role ENUM('student', 'admin','teacher') NOT NULL);
 
 
-
- INSERT INTO attendance (student_id, student_name, department_name, subject_name, date_, attendance_status)
-SELECT
-    student.student_id,
-    student.full_name AS student_name,
-    teacher.department_name,
-    teacher.subject_name,
-    CURDATE() AS date_,              -- Current date for 'date_' column
-    'absent' AS attendance_status    -- Default status is 'absent'
-FROM
-    student
-JOIN
-    teacher
-ON
-    student.department_name = teacher.department_name
-ON DUPLICATE KEY UPDATE
-    attendance_status = VALUES(attendance_status);
-
