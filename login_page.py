@@ -8,10 +8,10 @@ import admin_page
 def get_connection_to_mysql():
     try:
         return mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="1234",
-            database="student_"
+            host="",
+            user="",
+            password="",
+            database=""
         )
     except Error as e:
         st.error(f"Error connecting to database: {e}")
@@ -40,15 +40,7 @@ def login_page():
         st.session_state.user_email = None
         st.session_state.user_role = None
 
-    if st.session_state.logged_in:
-        st.subheader(f"Welcome, {st.session_state.user_name}")
-        st.write(f"Email: {st.session_state.user_email}")
-
-        if st.button("Logout"):
-            st.session_state.logged_in = False
-            st.session_state.user_id = None
-            st.session_state.user_email = None
-            st.session_state.user_role = None
+    
     else:
         st.subheader("Login")
         email = st.text_input("Email")
