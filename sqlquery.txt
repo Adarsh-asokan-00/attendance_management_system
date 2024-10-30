@@ -1,0 +1,68 @@
+create database student_;
+use student_;
+
+CREATE TABLE student (
+    student_id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100) NOT NULL,
+    email_id VARCHAR(100) UNIQUE NOT NULL,
+    phone_number VARCHAR(20),  -- Adjusted for standard length
+    address TEXT NOT NULL,
+    department_name VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(60) NOT NULL,  -- Adjusted for bcrypt hash length
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Optionally add ON UPDATE CURRENT_TIMESTAMP
+   # -- Optional: Add an updated_at column if you want to track updates
+    #-- updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+);
+
+
+create table attendance (
+    record_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    student_name VARCHAR(100) NOT NULL,
+    department_name VARCHAR(100) NOT NULL,
+    subject_name VARCHAR(100),
+    date_ DATE NOT NULL,
+    attendance_status ENUM('present', 'absent', 'late') NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+
+    UNIQUE KEY unique_attendance (student_id, subject_name, date_) -- Add subject_name to the unique constraint
+);
+create table teacher(teacher_id int primary key auto_increment,
+teacher_name varchar(100) not null,
+department_name varchar(100) not null,
+subject_name varchar(100) ,
+email_id varchar(100)not null,
+password_hash text not null);
+
+
+create table admin(admin_id int primary key auto_increment,
+name varchar(100) not null,
+email_id varchar(100) not null,
+password_hash text not null);
+
+create table users (user_id int auto_increment primary key,
+name varchar(100),
+email_id varchar(100) not null unique,
+password_hash text not null,
+ role ENUM('student', 'admin','teacher') NOT NULL);
+
+
+
+ INSERT INTO attendance (student_id, student_name, department_name, subject_name, date_, attendance_status)
+SELECT
+    student.student_id,
+    student.full_name AS student_name,
+    teacher.department_name,
+    teacher.subject_name,
+    CURDATE() AS date_,              -- Current date for 'date_' column
+    'absent' AS attendance_status    -- Default status is 'absent'
+FROM
+    student
+JOIN
+    teacher
+ON
+    student.department_name = teacher.department_name
+ON DUPLICATE KEY UPDATE
+    attendance_status = VALUES(attendance_status);
+
